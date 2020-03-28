@@ -1,0 +1,6 @@
+<map id="souffle::Trie&lt; 0u &gt;" name="souffle::Trie&lt; 0u &gt;">
+<area shape="rect" id="node2" href="$classsouffle_1_1detail_1_1_trie_base.html" title="{souffle::detail::TrieBase\l\&lt; 0u, Trie\&lt; 0u \&gt; \&gt;\n||+ contains()\l+ getHintStatistics()\l+ insert()\l}" alt="" coords="38,616,213,737"/>
+<area shape="rect" id="node3" href="$structsouffle_1_1detail_1_1_trie_base_1_1hint__statistics.html" title="{souffle::detail::TrieBase\l\&lt; Dim, Derived \&gt;::hint\l_statistics\n||}" alt="" coords="29,432,203,539"/>
+<area shape="rect" id="node4" href="$classsouffle_1_1_cache_access_counter.html" title="A utility class to keep track of cache hits/misses. " alt="" coords="5,160,216,340"/>
+<area shape="rect" id="node7" href="$structsouffle_1_1_tuple.html" title="{souffle::Tuple\&lt; RamDomain, 0 \&gt;\n||+ operator!=()\l+ operator\&lt;()\l+ operator==()\l+ operator\&gt;()\l+ operator[]()\l+ operator[]()\l}" alt="" coords="291,601,525,752"/>
+</map>

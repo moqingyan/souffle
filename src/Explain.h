@@ -404,10 +404,10 @@ private:
 
     /* Print a command prompt, disabled for non-terminal outputs */
     void printPrompt(const std::string& prompt) override {
-        if (isatty(fileno(stdin)) == 0) {
-            std::cout << "###" << std::endl << std::flush;
-            return;
-        }
+        // if (isatty(fileno(stdin)) == 0) {
+        //     std::cout << "###" << std::endl << std::flush;
+        //     return;
+        // }
         std::cout << prompt << std::endl << "###" << std::endl << std::flush;
 
 
@@ -443,10 +443,11 @@ private:
 
     /* Print any other information, disabled for non-terminal outputs */
     void printInfo(const std::string& info) override {
-        if (isatty(fileno(stdin)) == 0) {
-            return;
-        }
+        // if (isatty(fileno(stdin)) == 0) {
+        //     return;
+        // }
         std::cout << info;
+        std::cout << "INFO###";
     }
 
     /* Print an error, such as a wrong command */
@@ -553,11 +554,12 @@ private:
 
     /* Print any other information, disabled for non-terminal outputs */
     void printInfo(const std::string& info) override {
-        if (!isatty(fileno(stdin))) {
-            return;
-        }
+        // if (!isatty(fileno(stdin))) {
+        //     return;
+        // }
         wprintw(treePad, info.c_str());
         prefresh(treePad, 0, 0, 0, 0, maxy - 3, maxx - 1);
+        std::cout << "INFO###";
     }
 
     /* Print an error, such as a wrong command */

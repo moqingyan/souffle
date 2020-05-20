@@ -350,7 +350,8 @@ int main(int argc, char** argv) {
     // ------- parse program -------------
 
     // parse file
-    ErrorReport errReport(Global::config().has("no-warn"));
+    //ErrorReport errReport(Global::config().has("no-warn"));
+    ErrorReport errReport(true); // no-warning
     DebugReport debugReport;
     std::unique_ptr<AstTranslationUnit> astTranslationUnit =
             ParserDriver::parseTranslationUnit("<stdin>", in, errReport, debugReport);
@@ -578,9 +579,13 @@ int main(int argc, char** argv) {
 
                 // only run explain interface if interpreted
                 InterpreterProgInterface interface(*interpreter);
-                if (Global::config().get("provenance") == "explain" ||
+                std::string prov = Global::config().get("provenance");
+                std::size_t found = prov.find("explain");
+                if ( (found != std::string::npos) ||
                         Global::config().get("provenance") == "subtreeHeights") {
-                    explain(interface, false, Global::config().get("provenance") == "subtreeHeights");
+                            std::string target = prov.substr(found+7); // explain-target(11222)
+                            // std::cout << "prov: " << prov << ", target: " << target << std::endl;
+                    explain(interface, false, Global::config().get("provenance") == "subtreeHeights", target);
                 } else if (Global::config().get("provenance") == "explore") {
                     explain(interface, true, false);
                 }

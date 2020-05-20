@@ -268,6 +268,7 @@ public:
 
     /* The main explain call */
     virtual void explain() = 0;
+    virtual void explain(std::string cmd) {}
 
 private:
     /* Get input */
@@ -374,6 +375,11 @@ private:
 class ExplainConsole : public Explain {
 public:
     explicit ExplainConsole(ExplainProvenance& provenance) : Explain(provenance) {}
+
+    void explain(std::string cmd) override {
+        ExplainConfig::getExplainConfig().json = true;
+        processCommand(cmd);
+    }
 
     /* The main explain call */
     void explain() override {
@@ -623,7 +629,7 @@ private:
 };
 #endif
 
-inline void explain(SouffleProgram& prog, bool ncurses, bool useSubtreelevels) {
+inline void explain(SouffleProgram& prog, bool ncurses, bool useSubtreelevels, std::string target="") {
     ExplainProvenanceImpl prov(prog, useSubtreelevels);
 
     if (ncurses) {
@@ -635,7 +641,7 @@ inline void explain(SouffleProgram& prog, bool ncurses, bool useSubtreelevels) {
 #endif
     } else {
         ExplainConsole exp(prov);
-        exp.explain();
+        exp.explain("explain " + target);
     }
 }
 

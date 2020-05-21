@@ -109,6 +109,8 @@ public:
 
     virtual void printJSON(std::ostream& os, int pos) = 0;
 
+    virtual void printAxiom(std::ostream& os, int pos) = 0;
+
 protected:
     std::string txt;      // text of tree node
     uint32_t width = 0;   // width of node (including sub-trees)
@@ -187,6 +189,13 @@ public:
         os << tab << "}";
     }
 
+    // print Axiom
+    void printAxiom(std::ostream& os, int pos) override {
+        for (const std::unique_ptr<TreeNode>& k : children) {
+            k->printAxiom(os, pos + 1);
+        }    
+    }
+
 private:
     std::vector<std::unique_ptr<TreeNode>> children;
     std::string label;
@@ -219,6 +228,12 @@ public:
         std::string tab(pos, '\t');
         os << tab << R"({ "axiom": ")" << stringify(txt) << "\"}";
     }
+
+    // print Axiom
+    void printAxiom(std::ostream& os, int pos) override {
+        os << txt << "\n";
+    }
+
 };
 
 }  // end of namespace souffle

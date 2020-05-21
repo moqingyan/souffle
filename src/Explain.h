@@ -439,11 +439,12 @@ private:
             tree->render(screenBuffer);
             *output << screenBuffer.getString();
         } else {
-            *output << "{ \"proof\":\n";
-            tree->printJSON(*output, 1);
-            *output << ",";
-            prov.printRulesJSON(*output);
-            *output << "}\n";
+            // *output << "{ \"proof\":\n";
+            // tree->printJSON(*output, 1);
+            // *output << ",";
+            // prov.printRulesJSON(*output);
+            // *output << "}\n";
+            tree->printAxiom(*output, 1);
         }
     }
 

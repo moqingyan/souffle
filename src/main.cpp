@@ -602,7 +602,7 @@ int main(int argc, char** argv) {
 
                     for (auto target : target_ls) {
                         std::cout << "Explaining target " << target << std::endl;
-                        explain(interface, false, Global::config().get("provenance") == "subtreeHeights", target);
+                        explain(interface, false, Global::config().get("provenance") == "subtreeHeights", "target(" + target + ")");
                     }
                 } else if (Global::config().get("provenance") == "explore") {
                     explain(interface, true, false);

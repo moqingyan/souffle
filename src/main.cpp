@@ -579,13 +579,31 @@ int main(int argc, char** argv) {
 
                 // only run explain interface if interpreted
                 InterpreterProgInterface interface(*interpreter);
+                std::string explain_str = "explain";
                 std::string prov = Global::config().get("provenance");
-                std::size_t found = prov.find("explain");
-                if ( (found != std::string::npos) ||
-                        Global::config().get("provenance") == "subtreeHeights") {
-                            std::string target = prov.substr(found+7); // explain-target(11222)
-                            // std::cout << "prov: " << prov << ", target: " << target << std::endl;
-                    explain(interface, false, Global::config().get("provenance") == "subtreeHeights", target);
+                std::size_t found = prov.find(explain_str);
+
+                auto split = [](std::string input, const std::string &delim) {
+                    std::vector<std::string> target_ls;
+                    std::size_t pos = 0;
+                    while ((pos = input.find(delim)) != std::string::npos) {
+                        std::string target = input.substr(0, pos);
+                        if (!target.empty()) target_ls.push_back(target);
+                        std::cout << target << std::endl;
+                        input.erase(0, pos + delim.length());
+                    }
+                    if (!input.empty()) target_ls.push_back(input);
+                    return target_ls;
+                };
+
+                if ( (found != std::string::npos) || Global::config().get("provenance") == "subtreeHeights") {
+                    auto target_ls = split(prov.substr(found + explain_str.size()), ",");
+                    std::cout << "prov: " << prov << ", target: " << target_ls << std::endl;
+
+                    for (auto target : target_ls) {
+                        std::cout << "Explaining target " << target << std::endl;
+                        explain(interface, false, Global::config().get("provenance") == "subtreeHeights", target);
+                    }
                 } else if (Global::config().get("provenance") == "explore") {
                     explain(interface, true, false);
                 }

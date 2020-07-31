@@ -323,6 +323,7 @@ int main(int argc, char** argv) {
     // ------ start souffle -------------
 
     std::string souffleExecutable = which(argv[0]);
+    std::cout << "souffle executable: " << souffleExecutable << std::endl;
 
     if (souffleExecutable.empty()) {
         throw std::runtime_error("failed to determine souffle executable path");
@@ -343,6 +344,7 @@ int main(int argc, char** argv) {
     cmd += " -DRAM_DOMAIN_SIZE=" + std::to_string(RAM_DOMAIN_SIZE);
     cmd += " " + Global::config().get("");
     FILE* in = popen(cmd.c_str(), "r");
+    std::cout << "cmd: " << cmd << std::endl;
 
     /* Time taking for parsing */
     auto parser_start = std::chrono::high_resolution_clock::now();
@@ -556,6 +558,7 @@ int main(int argc, char** argv) {
         if (!Global::config().has("compile") && !Global::config().has("dl-program") &&
                 !Global::config().has("generate") && !Global::config().has("swig")) {
             // ------- interpreter -------------
+
 
             std::thread profiler;
             // Start up profiler if needed

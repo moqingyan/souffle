@@ -101,6 +101,7 @@
 #ifdef IS_PARALLEL
 
 #include <mutex>
+#include <stdio.h>
 
 namespace souffle {
 
@@ -114,7 +115,9 @@ class Lock {
 public:
     struct Lease {
         Lease(std::mutex& mux) : mux(&mux) {
+            printf("Getting lease from std::mutex %lx\n", (long int) &mux);
             mux.lock();
+            printf("Mutex Locked\n");
         }
         Lease(Lease&& other) : mux(other.mux) {
             other.mux = nullptr;

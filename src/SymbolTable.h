@@ -112,9 +112,12 @@ public:
     /** Find the index of a symbol in the table, inserting a new symbol if it does not exist there
      * already. */
     RamDomain lookup(const std::string& symbol) {
-        {
+        {   
+            std::cout << "looking up: " << symbol << std::endl;
             auto lease = access.acquire();
+            std::cout << "looking up 0: " << symbol << std::endl;
             (void)lease;  // avoid warning;
+            std::cout << "looking up 1: " << symbol << std::endl;
             return static_cast<RamDomain>(newSymbolOfIndex(symbol));
         }
     }

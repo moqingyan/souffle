@@ -1,0 +1,11 @@
+.type ObjectID
+.type Word
+
+.decl name(x: Word, y:ObjectID) 
+name("apple", "1"). 
+name("banana", "2"). 
+
+.decl target(o:ObjectID)
+.output target
+target(O) :- name("banana", O).
+

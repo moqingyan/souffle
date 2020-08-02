@@ -1,0 +1,35 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "g++-10 - Build and debug active file",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/PySouffle.out",
+            "args": [
+                "-I/Users/moqingyan/Tools/anaconda3/include/python3.8",
+                "-I/usr/local/opt/libffi/include",
+                "-I/usr/local/Cellar/sqlite/3.32.3/include",
+                "-I/Users/moqingyan/Desktop/Research/souffle/src",
+                "-I/Users/moqingyan/Desktop/Research/souffle",
+                "-L/Users/moqingyan/Tools/anaconda3/lib/",
+                "-L/usr/local/opt/libffi/lib/ -lffi",
+                "-L/usr/local/Cellar/gcc/10.1.0/lib/gcc/10 -lgomp",
+                "-L/usr/local/Cellar/sqlite/3.32.3/lib -lsqlite3",
+                "-lz",
+                "-g",
+                "-O0",
+                "-std=c++17 --shared -O3 -Wall -undefined dynamic_lookup -fPIC"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "C/C++: g++-10 build active file"
+        }
+    ]
+}

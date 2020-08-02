@@ -47,7 +47,11 @@ LIBSOUFFLE_OBJS = \
  	
 LIBSOUFFLE_OBJS_IN_DIR = $(patsubst %.o, ../src/%.o, $(LIBSOUFFLE_OBJS))
 
-all: obj link substitute_gomp
+all: update obj link substitute_gomp
+# all: update obj debug
+
+update:
+	make -C ..
 
 obj:
 	g++-10 \
@@ -61,12 +65,11 @@ obj:
 		-L/Users/moqingyan/Tools/anaconda3/lib/ \
 		-L/usr/local/Cellar/sqlite/3.32.3/lib -lsqlite3 \
 		-L/usr/local/opt/libffi/lib/ -lffi \
-		-L/usr/local/Cellar/gcc/10.1.0/lib/gcc/10 -lgomp \
 		-lz \
 		-c ../src/PySouffle.cpp \
 		-o PySouffle.o
 
-link:
+link: 
 	g++-10 \
 		-I/Users/moqingyan/Tools/anaconda3/include/python3.8 \
 		-I/usr/local/opt/libffi/include \
@@ -75,12 +78,27 @@ link:
 		-I.. \
 		-L/Users/moqingyan/Tools/anaconda3/lib/ \
 		-L/usr/local/opt/libffi/lib/ -lffi\
-		-L/usr/local/Cellar/gcc/10.1.0/lib/gcc/10 -lgomp \
 		-L/usr/local/Cellar/sqlite/3.32.3/lib -lsqlite3 \
 		-lz \
 		-std=c++17 --shared -O3 -Wall -undefined dynamic_lookup -fPIC \
 		`$(PYTHON3) -m pybind11 --includes` \
  		-o PySouffle`$(PYTHON3)-config --extension-suffix` \
+		$(LIBSOUFFLE_OBJS_IN_DIR) PySouffle.o
+
+debug:
+	g++-10 \
+		-I/Users/moqingyan/Tools/anaconda3/include/python3.8 \
+		-I/usr/local/opt/libffi/include \
+		-I/usr/local/Cellar/sqlite/3.32.3/include \
+		-I../src \
+		-I.. \
+		-g \
+		-L/Users/moqingyan/Tools/anaconda3/lib/ \
+		-L/usr/local/opt/libffi/lib/ -lffi\
+		-L/usr/local/Cellar/sqlite/3.32.3/lib -lsqlite3 \
+		-lz \
+		-std=c++17 -O0 -Wall -undefined dynamic_lookup -fPIC \
+		-o PySouffle.out \
 		$(LIBSOUFFLE_OBJS_IN_DIR) PySouffle.o
 
 substitute_gomp:

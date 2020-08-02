@@ -284,6 +284,8 @@ std::unique_ptr<RamRelationReference> AstTranslator::translateNewRelation(const 
 
 std::unique_ptr<RamExpression> AstTranslator::translateValue(
         const AstArgument* arg, const ValueIndex& index) {
+    
+    std::cout << "translate value: 1" << std::endl;
     if (arg == nullptr) {
         return nullptr;
     }
@@ -294,18 +296,23 @@ std::unique_ptr<RamExpression> AstTranslator::translateValue(
 
     public:
         ValueTranslator(AstTranslator& translator, const ValueIndex& index)
-                : translator(translator), index(index) {}
+                : translator(translator), index(index) {
+                    std::cout << "translate value: 20" << std::endl;
+                }
 
         std::unique_ptr<RamExpression> visitVariable(const AstVariable& var) override {
+            std::cout << "translate value: 2" << std::endl;
             assert(index.isDefined(var) && "variable not grounded");
             return makeRamTupleElement(index.getDefinitionPoint(var));
         }
 
         std::unique_ptr<RamExpression> visitUnnamedVariable(const AstUnnamedVariable&) override {
+            std::cout << "translate value: 3" << std::endl;
             return std::make_unique<RamUndefValue>();
         }
 
         std::unique_ptr<RamExpression> visitNumericConstant(const AstNumericConstant& c) override {
+            std::cout << "translate value: 4" << std::endl;
             assert(c.getType().has_value() && "At this points all constants should have type.");
 
             switch (*c.getType()) {
@@ -323,14 +330,21 @@ std::unique_ptr<RamExpression> AstTranslator::translateValue(
         }
 
         std::unique_ptr<RamExpression> visitStringConstant(const AstStringConstant& c) override {
-            return std::make_unique<RamSignedConstant>(translator.getSymbolTable().lookup(c.getConstant()));
+            std::cout << "translate value: 5 - " << c.getConstant() << std::endl;
+            
+            auto constant = std::make_unique<RamSignedConstant>(translator.getSymbolTable().lookup(c.getConstant()));
+            std::cout << "captured value: 5";
+            return constant;
+            // return std::make_unique<RamSignedConstant>(translator.getSymbolTable().lookup(c.getConstant()));
         }
 
         std::unique_ptr<RamExpression> visitNilConstant(const AstNilConstant&) override {
+            std::cout << "translate value: 6" << std::endl;
             return std::make_unique<RamSignedConstant>(0);
         }
 
         std::unique_ptr<RamExpression> visitIntrinsicFunctor(const AstIntrinsicFunctor& inf) override {
+            std::cout << "translate value: 7" << std::endl;
             std::vector<std::unique_ptr<RamExpression>> values;
             for (const auto& cur : inf.getArguments()) {
                 values.push_back(translator.translateValue(cur, index));
@@ -339,6 +353,7 @@ std::unique_ptr<RamExpression> AstTranslator::translateValue(
         }
 
         std::unique_ptr<RamExpression> visitUserDefinedFunctor(const AstUserDefinedFunctor& udf) override {
+            std::cout << "translate value: 8" << std::endl;
             // Sanity check.
             assert(udf.getArguments().size() == udf.getArgsTypes().size());
 
@@ -352,10 +367,12 @@ std::unique_ptr<RamExpression> AstTranslator::translateValue(
         }
 
         std::unique_ptr<RamExpression> visitCounter(const AstCounter&) override {
+            std::cout << "translate value: 9" << std::endl;
             return std::make_unique<RamAutoIncrement>();
         }
 
         std::unique_ptr<RamExpression> visitRecordInit(const AstRecordInit& init) override {
+            std::cout << "translate value: 10" << std::endl;
             std::vector<std::unique_ptr<RamExpression>> values;
             for (const auto& cur : init.getArguments()) {
                 values.push_back(translator.translateValue(cur, index));
@@ -364,11 +381,13 @@ std::unique_ptr<RamExpression> AstTranslator::translateValue(
         }
 
         std::unique_ptr<RamExpression> visitAggregator(const AstAggregator& agg) override {
+            std::cout << "translate value: 11" << std::endl;
             // here we look up the location the aggregation result gets bound
             return translator.makeRamTupleElement(index.getAggregatorLocation(agg));
         }
 
         std::unique_ptr<RamExpression> visitSubroutineArgument(const AstSubroutineArgument& subArg) override {
+            std::cout << "translate value: 12" << std::endl;
             return std::make_unique<RamSubroutineArgument>(subArg.getNumber());
         }
     };
@@ -703,34 +722,42 @@ std::unique_ptr<RamOperation> AstTranslator::ClauseTranslator::filterByConstrain
 /** generate RAM code for a clause */
 std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
         const AstClause& clause, const AstClause& originalClause, const int version) {
+    std::cout << "translate clause: 1" << std::endl;
     if (auto reorderedClause = getReorderedClause(clause, version)) {
         // translate reordered clause
         return translateClause(*reorderedClause, originalClause, version);
     }
 
+    std::cout << "translate clause: 2" << std::endl;
     // get extract some details
     const AstAtom* head = clause.getHead();
 
+    std::cout << "translate clause: 3" << std::endl;
     // handle facts
     if (isFact(clause)) {
         // translate arguments
+        std::cout << "translate clause: 4" << std::endl;
         std::vector<std::unique_ptr<RamExpression>> values;
         for (auto& arg : head->getArguments()) {
+            std::cout << "translate clause: 5" << std::endl;
             values.push_back(translator.translateValue(arg, ValueIndex()));
+            std::cout << "translate clause: 5 pushed back" << std::endl;
         }
 
+        std::cout << "translate clause: 6" << std::endl;
         // create a fact statement
         return std::make_unique<RamQuery>(
                 std::make_unique<RamProject>(translator.translateRelation(head), std::move(values)));
     }
 
+    std::cout << "translate clause: 7" << std::endl;
     // the rest should be rules
     assert(isRule(clause));
 
     createValueIndex(clause);
 
     // -- create RAM statement --
-
+    std::cout << "translate clause: 8" << std::endl;
     std::unique_ptr<RamOperation> op = createOperation(clause);
 
     /* add equivalence constraints imposed by variable binding */
@@ -749,6 +776,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
         }
     }
 
+    std::cout << "translate clause: 9" << std::endl;
     /* add conditions caused by atoms, negations, and binary relations */
     for (const auto& lit : clause.getBodyLiterals()) {
         if (auto condition = translator.translateConstraint(lit, valueIndex)) {
@@ -757,6 +785,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
     }
 
     // add aggregator conditions
+    std::cout << "translate clause: 10" << std::endl;
     size_t curLevel = op_nesting.size() - 1;
     for (auto it = op_nesting.rbegin(); it != op_nesting.rend(); ++it, --curLevel) {
         const AstNode* cur = *it;
@@ -779,6 +808,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
     }
 
     // add aggregator levels
+    std::cout << "translate clause: 11" << std::endl;
     --level;
     for (auto it = aggregators.rbegin(); it != aggregators.rend(); ++it, --level) {
         const AstAggregator* cur = *it;
@@ -802,6 +832,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
 
         // get the first predicate of the sub-clause
         // NB: at most one atom is permitted in a sub-clause
+        std::cout << "translate clause: 12" << std::endl;
         const AstAtom* atom = nullptr;
         for (const auto& lit : cur->getBodyLiterals()) {
             if (atom == nullptr) {
@@ -813,6 +844,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
         }
 
         // translate arguments's of atom (if exists) to conditions
+        std::cout << "translate clause: 13" << std::endl;
         if (atom != nullptr) {
             size_t pos = 0;
             for (auto arg : atom->getArguments()) {
@@ -845,6 +877,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
         }
 
         // translate aggregate expression
+        std::cout << "translate clause: 14" << std::endl;
         std::unique_ptr<RamExpression> expr =
                 translator.translateValue(cur->getTargetExpression(), valueIndex);
         if (expr == nullptr) {
@@ -856,6 +889,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
         }
 
         // add Ram-Aggregation layer
+        std::cout << "translate clause: 15" << std::endl;
         std::unique_ptr<RamAggregate> aggregate =
                 std::make_unique<RamAggregate>(std::move(op), cur->getOperator(),
                         translator.translateRelation(atom), std::move(expr), std::move(aggCondition), level);
@@ -863,6 +897,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
     }
 
     // build operation bottom-up
+    std::cout << "translate clause: 16" << std::endl;
     while (!op_nesting.empty()) {
         // get next operator
         const AstNode* cur = op_nesting.back();
@@ -931,6 +966,7 @@ std::unique_ptr<RamStatement> AstTranslator::ClauseTranslator::translateClause(
     }
 
     /* generate the final RAM Insert statement */
+    std::cout << "translate clause: 17" << std::endl;
     std::unique_ptr<RamCondition> cond = createCondition(originalClause);
     if (cond != nullptr) {
         return std::make_unique<RamQuery>(std::make_unique<RamFilter>(std::move(cond), std::move(op)));
@@ -964,6 +1000,7 @@ std::unique_ptr<RamStatement> AstTranslator::translateNonRecursiveRelation(
 
     // the ram table reference
     std::unique_ptr<RamRelationReference> rrel = translateRelation(&rel);
+    std::cout << "init translate non rec" << std::endl; 
 
     /* iterate over all clauses that belong to the relation */
     for (AstClause* clause : getClauses(*program, rel)) {
@@ -973,7 +1010,9 @@ std::unique_ptr<RamStatement> AstTranslator::translateNonRecursiveRelation(
         }
 
         // translate clause
+        std::cout << "translating clause" << std::endl; 
         std::unique_ptr<RamStatement> rule = ClauseTranslator(*this).translateClause(*clause, *clause);
+        std::cout << "translate clause" << std::endl; 
 
         // add logging
         if (Global::config().has("profile")) {
@@ -993,9 +1032,11 @@ std::unique_ptr<RamStatement> AstTranslator::translateNonRecursiveRelation(
         ds << toString(*clause) << "\nin file ";
         ds << clause->getSrcLoc();
         rule = std::make_unique<RamDebugInfo>(std::move(rule), ds.str());
+        std::cout << "debug info clause" << std::endl; 
 
         // add rule to result
         appendStmt(res, std::move(rule));
+        std::cout << "update result" << std::endl; 
     }
 
     // add logging for entire relation
@@ -1516,6 +1557,8 @@ std::unique_ptr<RamStatement> AstTranslator::makeNegationSubproofSubroutine(cons
 
 /** translates the given datalog program into an equivalent RAM program  */
 void AstTranslator::translateProgram(const AstTranslationUnit& translationUnit) {
+
+    std::cout << "start translate program" << std::endl;
     // obtain type environment from analysis
     typeEnv = &translationUnit.getAnalysis<TypeEnvironmentAnalysis>()->getTypeEnvironment();
 
@@ -1616,6 +1659,7 @@ void AstTranslator::translateProgram(const AstTranslationUnit& translationUnit) 
             }
         }
     }
+    std::cout << "start scc" << std::endl;
     // iterate over each SCC according to the topological order
     for (const auto& scc : sccOrder.order()) {
         // make a new ram statement for the current SCC
@@ -1623,32 +1667,40 @@ void AstTranslator::translateProgram(const AstTranslationUnit& translationUnit) 
 
         // find out if the current SCC is recursive
         const auto& isRecursive = sccGraph.isRecursive(scc);
+        std::cout << "recersive checked: " << isRecursive << std::endl;
 
         // make variables for particular sets of relations contained within the current SCC, and,
         // predecessors and successor SCCs thereof
         const auto& allInterns = sccGraph.getInternalRelations(scc);
         const auto& internIns = sccGraph.getInternalInputRelations(scc);
         const auto& internOuts = sccGraph.getInternalOutputRelations(scc);
+        std::cout << "Internal Relation setup" << std::endl;
 
         // make a variable for all relations that are expired at the current SCC
         const auto& internExps = expirySchedule.at(indexOfScc).expired();
 
         // load all internal input relations from the facts dir with a .facts extension
         for (const auto& relation : internIns) {
+            std::cout << "start load" << std::endl;
             makeRamLoad(current, relation, "fact-dir", ".facts");
+            std::cout << "end load" << std::endl;
         }
 
         // compute the relations themselves
+        std::cout << "relation computing" << std::endl;
         std::unique_ptr<RamStatement> bodyStatement =
                 (!isRecursive) ? translateNonRecursiveRelation(
                                          *((const AstRelation*)*allInterns.begin()), recursiveClauses)
                                : translateRecursiveRelation(allInterns, recursiveClauses);
         appendStmt(current, std::move(bodyStatement));
+        std::cout << "relation computed" << std::endl;
 
         // store all internal output relations to the output dir with a .csv extension
+        std::cout << "before store" << std::endl;
         for (const auto& relation : internOuts) {
             makeRamStore(current, relation, "output-dir", ".csv");
         }
+        std::cout << "after store" << std::endl;
 
         // if provenance is not enabled...
         if (!Global::config().has("provenance")) {
@@ -1729,10 +1781,14 @@ const Json AstTranslator::getRecordsTypes(void) {
 }
 
 std::unique_ptr<RamTranslationUnit> AstTranslator::translateUnit(AstTranslationUnit& tu) {
+    std::cout << "In translate unit" << std::endl;
     auto ram_start = std::chrono::high_resolution_clock::now();
+    std::cout << "getting program" << std::endl;
     program = tu.getProgram();
 
+    std::cout << "translating program" << std::endl;
     translateProgram(tu);
+    std::cout << "Finished translating program" << std::endl;
     SymbolTable& symTab = getSymbolTable();
     ErrorReport& errReport = tu.getErrorReport();
     DebugReport& debugReport = tu.getDebugReport();
@@ -1743,8 +1799,10 @@ std::unique_ptr<RamTranslationUnit> AstTranslator::translateUnit(AstTranslationU
     if (nullptr == ramMain) {
         ramMain = std::make_unique<RamSequence>();
     }
+    std::cout << "Generating RAM program" << std::endl;
     std::unique_ptr<RamProgram> ramProg =
             std::make_unique<RamProgram>(std::move(rels), std::move(ramMain), std::move(ramSubs));
+    std::cout << "Finished Generate RAM program" << std::endl;
     if (!Global::config().get("debug-report").empty()) {
         if (ramProg) {
             auto ram_end = std::chrono::high_resolution_clock::now();

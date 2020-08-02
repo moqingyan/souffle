@@ -55,6 +55,7 @@ update:
 
 obj:
 	g++-10 \
+	    --shared \
 		-I/Users/moqingyan/Tools/anaconda3/include/python3.8 \
 		-I/usr/local/opt/libffi/include \
 		-I/usr/local/Cellar/sqlite/3.32.3/include \
@@ -71,6 +72,7 @@ obj:
 
 link: 
 	g++-10 \
+		--shared \
 		-I/Users/moqingyan/Tools/anaconda3/include/python3.8 \
 		-I/usr/local/opt/libffi/include \
 		-I/usr/local/Cellar/sqlite/3.32.3/include \

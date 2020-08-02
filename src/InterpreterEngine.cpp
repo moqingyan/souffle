@@ -149,18 +149,23 @@ void InterpreterEngine::resetIterationNumber() {
 }
 
 void InterpreterEngine::executeMain() {
+    std::cout << "Execute main: 1" << std::endl;
     SignalHandler::instance()->set();
     if (Global::config().has("verbose")) {
         SignalHandler::instance()->enableLogging();
     }
-
+    
+    std::cout << "Execute main: 2" << std::endl;
     RamStatement& program = tUnit.getProgram().getMain();
     auto entry = generator.generateTree(program);
     InterpreterContext ctxt;
+    std::cout << "Execute main: 3" << std::endl;
 
     if (!profileEnabled) {
+        std::cout << "Start Execute no Profiling" << std::endl;
         InterpreterContext ctxt;
         execute(entry.get(), ctxt);
+        std::cout << "Finish Execute no Profiling" << std::endl;
     } else {
         ProfileEventSingleton::instance().setOutputFile(Global::config().get("profile"));
         // Prepare the frequency table for threaded use
@@ -205,7 +210,10 @@ void InterpreterEngine::executeMain() {
                     "@relation-reads;" + cur.first, cur.second, 0);
         }
     }
+    std::cout << "reset handler" << std::endl;
     SignalHandler::instance()->reset();
+    std::cout << "Done reset handler" << std::endl;
+
 }
 void InterpreterEngine::executeSubroutine(
         const std::string& name, const std::vector<RamDomain>& args, std::vector<RamDomain>& ret) {
@@ -1144,18 +1152,22 @@ RamDomain InterpreterEngine::execute(const InterpreterNode* node, InterpreterCon
                 return true;
             } else if (op == "output" || op == "printsize") {
                 try {
+                    std::cout << "trying output" << std::endl;
                     IOSystem::getInstance()
                             .getWriter(RWOperation(directive), getSymbolTable(), getRecordTable())
                             ->writeAll(*node->getRelation());
+                    std::cout << "end output" << std::endl;
                 } catch (std::exception& e) {
                     std::cerr << e.what();
                     exit(1);
                 }
+                std::cout << "output ret" << std::endl;
                 return true;
             } else {
                 assert("wrong i/o operation");
                 return true;
             }
+            std::cout << "end io" << std::endl;
         ESAC(IO)
 
         CASE_NO_CAST(Query)

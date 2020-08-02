@@ -111,7 +111,10 @@ public:
         // of the change flag.
         // Note that for other semantics, new transformer
         // sequence class needs to be introduced.
+
+        std::cout << "start transforming" << std::endl;
         for (auto const& cur : transformers) {
+            std::cout << "cur transformer" << cur->getName() << std::endl;
             changed = cur->apply(tU);
         }
         return changed;

@@ -148,7 +148,7 @@ void InterpreterEngine::resetIterationNumber() {
     iteration = 0;
 }
 
-std::string InterpreterEngine::get_execute_result(){
+std::map<std::string, std::vector<std::string>> InterpreterEngine::get_execute_result(){
     return execute_result;
 }
 
@@ -1163,7 +1163,8 @@ RamDomain InterpreterEngine::execute(const InterpreterNode* node, InterpreterCon
                     
                     WriteStringCSV writer = WriteStringCSV(RWOperation(directive), getSymbolTable(), getRecordTable());
                     writer.writeAll(*node->getRelation());
-                    this->execute_result += writer.getstring();
+                    std::vector<std::string> result = writer.getResult();
+                    this->execute_result[result[0]] = splitString(result[2], '\n');
                     
                     std::cout << "end output: " << std::endl;
                 } catch (std::exception& e) {

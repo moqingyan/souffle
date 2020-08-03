@@ -184,21 +184,27 @@ public:
     WriteStringCSV(
             const RWOperation& rwOperation, const SymbolTable& symbolTable, const RecordTable& recordTable)
             : WriteStreamCSV(rwOperation, symbolTable, recordTable) {
-            ss << rwOperation.get("name") << std::endl;
+            name << rwOperation.get("name");
             if (rwOperation.has("headers") && rwOperation.get("headers") == "true") {
-                ss << rwOperation.get("attributeNames") << std::endl;
+                header << rwOperation.get("attributeNames") << std::endl;
             }
     }
 
     ~WriteStringCSV() override {
     }
 
-    std::string getstring() {
-        return ss.str();
+    std::vector<std::string>  getResult() {
+        std::vector<std::string> result;
+        result.push_back(name.str());
+        result.push_back(header.str());
+        result.push_back(ss.str());
+        return result;
     }
 
 protected:
     std::stringstream ss;
+    std::stringstream name;
+    std::stringstream header;
 
     void writeNullary() override {
         ss << "()\n";

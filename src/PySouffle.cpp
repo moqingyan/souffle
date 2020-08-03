@@ -42,6 +42,7 @@
 #include <vector>
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 int executeBinary(const std::string& binaryFilename) {
     assert(!binaryFilename.empty() && "binary filename cannot be blank");
@@ -276,10 +277,10 @@ int check_ram_err(const std::unique_ptr<RamTranslationUnit> &ramTranslationUnit)
 }
 
 
-std::string execute(std::string code, bool get_prov){
+std::map<std::string, std::vector<std::string>> execute(std::string code, bool get_prov){
 
+    std::list<std::string> result = {};
     setup_config();
-    std::cout << "job number: " << std::stoi(Global::config().get("jobs")) << std::endl;
     DebugReport debugReport;
     ErrorReport errReport(true); // no-warning
 
@@ -310,10 +311,28 @@ std::string execute(std::string code, bool get_prov){
     std::unique_ptr<InterpreterEngine> interpreter(
                     std::make_unique<InterpreterEngine>(*ramTranslationUnit));
     interpreter->executeMain();
-    std::cout << "RAM: Execute Finished" << std::endl;
-    std::string res = interpreter->get_execute_result(); 
 
-    return res;
+    std::cout << "RAM: Execute Finished" << std::endl;
+    std::map<std::string, std::vector<std::string>> execution_res = interpreter->get_execute_result(); 
+
+    if (get_prov){
+        // only run explain interface if interpreted
+        InterpreterProgInterface interface(*interpreter);
+        auto it = execution_res.find("target");
+        if (it != execution_res.end()) {
+            auto target_ls = it->second;
+            std::cout << "target: " << target_ls << std::endl;
+
+            for (auto target : target_ls) {
+                std::cout << "Explaining target " << target << std::endl;
+                explain(interface, false, Global::config().get("provenance") == "subtreeHeights", "target(" + target + ")");
+            }
+        } else if (Global::config().get("provenance") == "explore") {
+            explain(interface, true, false);
+        }
+    }
+
+    return execution_res;
 
 }
 

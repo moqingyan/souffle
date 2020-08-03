@@ -67,6 +67,7 @@ public:
             writeNext(current);
         }
     }
+
     template <typename T>
     void writeSize(const T& relation) {
         writeSize(relation.size());

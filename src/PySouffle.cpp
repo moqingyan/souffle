@@ -109,7 +109,7 @@ auto setup_config(){
         std::vector<MainOption> options{{"", 0, "", "", false, ""},
                 {"fact-dir", 'F', "DIR", ".", false, "Specify directory for fact files."},
                 {"include-dir", 'I', "DIR", ".", true, "Specify directory for include files."},
-                {"output-dir", 'D', "DIR", ".", false,
+                {"output-dir", 'D', "DIR", "+", false,
                         "Specify directory for output files. If <DIR> is `-` then stdout is used."},
                 {"jobs", 'j', "N", "1", false,
                         "Run interpreter/compiler in parallel using N threads, N=auto for system "
@@ -275,7 +275,8 @@ int check_ram_err(const std::unique_ptr<RamTranslationUnit> &ramTranslationUnit)
     return 0;
 }
 
-int execute(std::string code, bool get_prov){
+
+std::string execute(std::string code, bool get_prov){
 
     setup_config();
     std::cout << "job number: " << std::stoi(Global::config().get("jobs")) << std::endl;
@@ -310,7 +311,9 @@ int execute(std::string code, bool get_prov){
                     std::make_unique<InterpreterEngine>(*ramTranslationUnit));
     interpreter->executeMain();
     std::cout << "RAM: Execute Finished" << std::endl;
-    return 0;
+    std::string res = interpreter->get_execute_result(); 
+
+    return res;
 
 }
 

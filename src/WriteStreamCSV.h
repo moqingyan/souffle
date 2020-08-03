@@ -152,6 +152,7 @@ protected:
     }
 };
 
+
 class WriteCoutPrintSize : public WriteStream {
 public:
     explicit WriteCoutPrintSize(const RWOperation& rwOperation)
@@ -176,6 +177,51 @@ protected:
 
     Lock::Lease lease;
 };
+
+
+class WriteStringCSV : public WriteStreamCSV {
+public:
+    WriteStringCSV(
+            const RWOperation& rwOperation, const SymbolTable& symbolTable, const RecordTable& recordTable)
+            : WriteStreamCSV(rwOperation, symbolTable, recordTable) {
+            ss << rwOperation.get("name") << std::endl;
+            if (rwOperation.has("headers") && rwOperation.get("headers") == "true") {
+                ss << rwOperation.get("attributeNames") << std::endl;
+            }
+    }
+
+    ~WriteStringCSV() override {
+    }
+
+    std::string getstring() {
+        return ss.str();
+    }
+
+protected:
+    std::stringstream ss;
+
+    void writeNullary() override {
+        ss << "()\n";
+    }
+
+    void writeNextTuple(const RamDomain* tuple) override {
+        writeNextTupleCSV(ss, tuple);
+    }
+};
+
+class WriteStringCSVFactory : public WriteStreamFactory {
+public:
+    std::unique_ptr<WriteStream> getWriter(const RWOperation& rwOperation, const SymbolTable& symbolTable,
+            const RecordTable& recordTable) override {
+        return std::make_unique<WriteStringCSV>(rwOperation, symbolTable, recordTable);
+    }
+    const std::string& getName() const override {
+        static const std::string name = "string";
+        return name;
+    }
+    ~WriteStringCSVFactory() override = default;
+};
+
 
 class WriteFileCSVFactory : public WriteStreamFactory {
 public:

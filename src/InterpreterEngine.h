@@ -54,13 +54,16 @@ public:
         }
 #endif
     }
+
     /** @brief Execute the main program */
     void executeMain();
     /** @brief Execute the subroutine program */
     void executeSubroutine(
             const std::string& name, const std::vector<RamDomain>& args, std::vector<RamDomain>& ret);
+    std::string get_execute_result();
 
 private:
+    std::string execute_result = "";
     /** @brief Remove a relation from the environment */
     void dropRelation(const size_t relId);
     /** @brief Swap the content of two relations */

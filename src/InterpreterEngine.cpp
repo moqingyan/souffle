@@ -148,6 +148,10 @@ void InterpreterEngine::resetIterationNumber() {
     iteration = 0;
 }
 
+std::string InterpreterEngine::get_execute_result(){
+    return execute_result;
+}
+
 void InterpreterEngine::executeMain() {
     std::cout << "Execute main: 1" << std::endl;
     SignalHandler::instance()->set();
@@ -1153,10 +1157,15 @@ RamDomain InterpreterEngine::execute(const InterpreterNode* node, InterpreterCon
             } else if (op == "output" || op == "printsize") {
                 try {
                     std::cout << "trying output" << std::endl;
-                    IOSystem::getInstance()
-                            .getWriter(RWOperation(directive), getSymbolTable(), getRecordTable())
-                            ->writeAll(*node->getRelation());
-                    std::cout << "end output" << std::endl;
+                    // IOSystem::getInstance()
+                    //         .getWriter(RWOperation(directive), getSymbolTable(), getRecordTable())
+                    //         ->writeAll(*node->getRelation());
+                    
+                    WriteStringCSV writer = WriteStringCSV(RWOperation(directive), getSymbolTable(), getRecordTable());
+                    writer.writeAll(*node->getRelation());
+                    this->execute_result += writer.getstring();
+                    
+                    std::cout << "end output: " << std::endl;
                 } catch (std::exception& e) {
                     std::cerr << e.what();
                     exit(1);

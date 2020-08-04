@@ -40,6 +40,7 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <regex>
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -110,7 +111,7 @@ auto setup_config(){
         std::vector<MainOption> options{{"", 0, "", "", false, ""},
                 {"fact-dir", 'F', "DIR", ".", false, "Specify directory for fact files."},
                 {"include-dir", 'I', "DIR", ".", true, "Specify directory for include files."},
-                {"output-dir", 'D', "DIR", "+", false,
+                {"output-dir", 'D', "DIR", ".", false,
                         "Specify directory for output files. If <DIR> is `-` then stdout is used."},
                 {"jobs", 'j', "N", "1", false,
                         "Run interpreter/compiler in parallel using N threads, N=auto for system "
@@ -142,7 +143,7 @@ auto setup_config(){
                         "Use profile log-file <FILE> for profile-guided optimization."},
                 {"debug-report", 'r', "/Users/moqingyan/Desktop/Research/example/debug_report", "", true, "Write HTML debug report to <FILE>."},
                 {"pragma", 'P', "OPTIONS", "", false, "Set pragma options."},
-                {"provenance", 't', "[ none | explain | explore | subtreeHeights ]", "", false,
+                {"provenance", 't', "[ none | explain | explore | subtreeHeights ]", "explain", false,
                         "Enable provenance instrumentation and interaction."},
                 {"verbose", 'v', "", "", false, "Verbose output."},
                 {"version", '\3', "", "", false, "Version."},

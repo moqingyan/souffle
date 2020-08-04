@@ -88,12 +88,15 @@ public:
             }
             printInfo("Depth is now " + std::to_string(ExplainConfig::getExplainConfig().depthLimit) + "\n");
         } else if (command[0] == "explain") {
+            std::cout << "explain cmd: " << command << std::endl;
             std::pair<std::string, std::vector<std::string>> query;
             if (command.size() != 2) {
                 printError("Usage: explain relation_name(\"<string element1>\", <number element2>, ...)\n");
                 return true;
             }
+            std::cout << "explain cmd 2";
             query = parseTuple(command[1]);
+            std::cout << "explain cmd 3";
             printTree(prov.explain(query.first, query.second, ExplainConfig::getExplainConfig().depthLimit));
         } else if (command[0] == "subproof") {
             std::pair<std::string, std::vector<std::string>> query;
@@ -293,7 +296,7 @@ private:
     std::pair<std::string, std::vector<std::string>> parseTuple(const std::string& str) {
         std::string relName;
         std::vector<std::string> args;
-
+        std::cout << "Parse Tuple" << std::endl;
         // regex for matching tuples
         // values matches numbers or strings enclosed in quotation marks
         std::regex relationRegex(
@@ -305,6 +308,7 @@ private:
 
         // first check that format matches correctly
         // and extract relation name
+        std::cout << "Parse Tuple: 1" << std::endl;
         if (!std::regex_match(str, relMatch, relationRegex) || relMatch.size() < 3) {
             return std::make_pair(relName, args);
         }
@@ -313,10 +317,12 @@ private:
         relName = relMatch[1];
 
         // extract each argument
+        std::cout << "Parse Tuple: 2" << std::endl;
         std::string argsList = relMatch[2];
         std::smatch argsMatcher;
         std::regex argRegex(R"([0-9]+|"[^"]*")", std::regex_constants::extended);
 
+        std::cout << "Parse Tuple: 3" << std::endl;
         while (std::regex_search(argsList, argsMatcher, argRegex)) {
             // match the start of the arguments
             std::string currentArg = argsMatcher[0];
@@ -326,6 +332,7 @@ private:
             argsList = argsMatcher.suffix().str();
         }
 
+        std::cout << "Finish: Parse Tuple" << std::endl;
         return std::make_pair(relName, args);
     }
 
@@ -377,12 +384,14 @@ public:
     explicit ExplainConsole(ExplainProvenance& provenance) : Explain(provenance) {}
 
     void explain(std::string cmd) override {
+        std::cout << "explain 1" << std::endl;
         ExplainConfig::getExplainConfig().json = true;
         processCommand(cmd);
     }
 
     /* The main explain call */
     void explain() override {
+        std::cout << "Explain console" << std::endl;
         printPrompt("Explain is invoked.\n");
 
         while (true) {
@@ -640,8 +649,11 @@ inline void explain(SouffleProgram& prog, bool ncurses, bool useSubtreelevels, s
         std::cout << "The ncurses-based interface is not enabled\n";
 #endif
     } else {
+        std::cout << "Explain 1: "<< target << std::endl;
         ExplainConsole exp(prov);
+        std::cout << "Explain 2 " << std::endl;
         exp.explain("explain " + target);
+        std::cout << "Explain 3" << std::endl;
     }
 }
 

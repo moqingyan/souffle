@@ -1,4 +1,4 @@
-PYTHON3 = /Users/moqingyan/Tools/anaconda3/bin/python3
+PYTHON3 = python3
 GOMP_LIB_SRC="@rpath/libgomp.1.dylib"
 GOMP_LIB_DST="/usr/local/Cellar/gcc/10.1.0/lib/gcc/10/libgomp.1.dylib"
 
@@ -47,48 +47,40 @@ LIBSOUFFLE_OBJS = \
  	
 LIBSOUFFLE_OBJS_IN_DIR = $(patsubst %.o, ../src/%.o, $(LIBSOUFFLE_OBJS))
 
-all: update obj link substitute_gomp
+# all: update obj link substitute_gomp
 # all: update obj debug
+all: update obj link
 
 update:
 	make -C ..
 
 obj:
-	g++-10 \
-	    --shared \
-		-I/Users/moqingyan/Tools/anaconda3/include/python3.8 \
-		-I/usr/local/opt/libffi/include \
-		-I/usr/local/Cellar/sqlite/3.32.3/include \
+	g++ \
+		-O3 \
 		`$(PYTHON3) -m pybind11 --includes` \
 		-I../src \
 		-I.. \
-		-std=c++17 --shared -O3 -Wall -undefined dynamic_lookup -fPIC \
-		-L/Users/moqingyan/Tools/anaconda3/lib/ \
-		-L/usr/local/Cellar/sqlite/3.32.3/lib -lsqlite3 \
-		-L/usr/local/opt/libffi/lib/ -lffi \
-		-lz \
+		-std=c++17 --shared -O3 -Wall -fPIC\
 		-c ../src/PySouffle.cpp \
 		-o PySouffle.o
 
+# c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`
+
 link: 
-	g++-10 \
-		--shared \
-		-I/Users/moqingyan/Tools/anaconda3/include/python3.8 \
-		-I/usr/local/opt/libffi/include \
-		-I/usr/local/Cellar/sqlite/3.32.3/include \
+	g++ \
+		-O3 \
+		`$(PYTHON3) -m pybind11 --includes` \
+		-I/home/jianih/.local/include \
 		-I../src \
 		-I.. \
-		-L/Users/moqingyan/Tools/anaconda3/lib/ \
-		-L/usr/local/opt/libffi/lib/ -lffi\
-		-L/usr/local/Cellar/sqlite/3.32.3/lib -lsqlite3 \
-		-lz \
-		-std=c++17 --shared -O3 -Wall -undefined dynamic_lookup -fPIC \
-		`$(PYTHON3) -m pybind11 --includes` \
+		-std=c++17 --shared -O3 -Wall -fPIC \
+		-L/home/jianih/local/anaconda3/lib \
+		-lsqlite3\
  		-o PySouffle`$(PYTHON3)-config --extension-suffix` \
 		$(LIBSOUFFLE_OBJS_IN_DIR) PySouffle.o
 
 debug:
-	g++-10 \
+	g++ \
 		-I/Users/moqingyan/Tools/anaconda3/include/python3.8 \
 		-I/usr/local/opt/libffi/include \
 		-I/usr/local/Cellar/sqlite/3.32.3/include \

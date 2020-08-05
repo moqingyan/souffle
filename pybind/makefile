@@ -47,9 +47,26 @@ LIBSOUFFLE_OBJS = \
  	
 LIBSOUFFLE_OBJS_IN_DIR = $(patsubst %.o, ../src/%.o, $(LIBSOUFFLE_OBJS))
 
+LIBSOUFFLE_SHARED_OBJS_IN_DIR = $(patsubst %.o, %.so, $(LIBSOUFFLE_OBJS_IN_DIR))
+
+new_entry: update $(LIBSOUFFLE_SHARED_OBJS_IN_DIR)
+	g++ -std=c++17 -shared -O3 -Wall -fPIC \
+		`$(PYTHON3) -m pybind11 --includes` \
+		-I/home/jianih/local/anaconda3/include \
+		-I../src \
+		-I../ \
+		-Wl,-rpath,/home/jianih/local/anaconda3/lib \
+		-Wl,/home/jianih/local/anaconda3/lib/libffi.so \
+		-L/home/jianih/.local/lib \
+		-L/home/jianih/local/anaconda3/lib \
+		-lffi -lsqlite3 -lz \
+		PySouffle.cpp \
+		$(LIBSOUFFLE_OBJS_IN_DIR) \
+		-o PySouffle`$(PYTHON3)-config --extension-suffix`
+
 # all: update obj link substitute_gomp
 # all: update obj debug
-all: update obj link
+all: update $(LIBSOUFFLE_SHARED_OBJS_IN_DIR) obj link
 
 update:
 	make -C ..
@@ -58,26 +75,40 @@ obj:
 	g++ \
 		-O3 \
 		`$(PYTHON3) -m pybind11 --includes` \
+		-I/home/jianih/local/anaconda3/include \
 		-I../src \
 		-I.. \
-		-std=c++17 --shared -O3 -Wall -fPIC\
+		-L/home/jianih/local/anaconda3/lib -lffi \
+		-lsqlite3\
+		-lz \
+		-std=c++17 -shared -O3 -Wall -fPIC \
 		-c ../src/PySouffle.cpp \
-		-o PySouffle.o
+		-o PySouffle.o 
+
+%.so: %.o
+	g++ -shared $< -o $@
 
 # c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`
 
 link: 
 	g++ \
-		-O3 \
 		`$(PYTHON3) -m pybind11 --includes` \
-		-I/home/jianih/.local/include \
+		-Wall\
+		-std=c++17 -shared -O3 -Wall -fPIC \
 		-I../src \
 		-I.. \
-		-std=c++17 --shared -O3 -Wall -fPIC \
-		-L/home/jianih/local/anaconda3/lib \
-		-lsqlite3\
+		-L/home/jianih/.local/lib/ \
+		-L/usr/lib/x86_64-linux-gnu/ \
+		-L/home/jianih/local/anaconda3/lib/\
+		-lpthread -lz -lncurses -lgomp -lffi -lsqlite3 -fopenmp\
+		-v \
  		-o PySouffle`$(PYTHON3)-config --extension-suffix` \
-		$(LIBSOUFFLE_OBJS_IN_DIR) PySouffle.o
+		$(LIBSOUFFLE_OBJS_IN_DIR) PySouffle.o \
+		/home/jianih/local/anaconda3/lib/libffi.so \
+		/home/jianih/local/anaconda3/lib/libsqlite3.so\
+		/home/jianih/local/anaconda3/lib/libz.so
+		# -L/home/jianih/local/anaconda3/lib \
+		# -lffi -lsqlite3 -lz
 
 debug:
 	g++ \

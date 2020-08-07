@@ -340,35 +340,6 @@ std::map<std::string, std::vector<std::string>> execute(std::string code, bool g
     return execution_res;
 }
 
-// std::map<std::string, std::vector<std::string>> execute(std::shared_ptr<InterpreterEngine> interpreter){
-
-//     interpreter->executeMain();
-
-//     std::cout << "RAM: Execute Finished" << std::endl;
-//     std::map<std::string, std::vector<std::string>> execution_res = interpreter->get_execute_result(); 
-
-//     return execution_res;
-// }
-
-// std::string get_prov(InterpreterEngine &interpreter, std::map<std::string, std::vector<std::string>> execution_res){
-//     // only run explain interface if interpreted
-//     InterpreterProgInterface interface(interpreter);
-//     auto it = execution_res.find("target");
-//     if (it != execution_res.end()) {
-//         auto target_ls = it->second;
-//         std::cout << "target: " << target_ls << std::endl;
-
-//         for (auto target : target_ls) {
-//                 std::cout << "Explaining target " << target << std::endl;
-//                 explain(interface, false, Global::config().get("provenance") == "subtreeHeights", "target(" + target + ")");
-//         }
-//     } else if (Global::config().get("provenance") == "explore") {
-//         explain(interface, true, false);
-//     }
-//     return "pass";
-// }
-
-
 class Interpreter{
     public:
         Interpreter(const std::string &code) {
@@ -404,35 +375,18 @@ class Interpreter{
 
             // Initialize ss
             ExplainConfig::getExplainConfig().json = true;
-            // ExplainConfig::getExplainConfig().outputStream = std::make_unique<std::ostringstream>();
+            ExplainConfig::getExplainConfig().outputStream = std::make_unique<std::ostringstream>();
 
             engine->executeMain();
-            std::map<std::string, std::vector<std::string>> execution_res = engine->get_execute_result(); 
+            this->execution_res = engine->get_execute_result(); 
             // only run explain interface if interpreted
             // InterpreterProgInterface interface(*engine);
             std::cout << "execution res" << execution_res << std::endl;
             this->interface = std::make_shared<InterpreterProgInterface>(*this->engine);
-            
-            // std::string target = "2";
-            // explain(*this->interface, false, Global::config().get("provenance") == "subtreeHeights", "target(\"" + target +"\")");
-
-            // auto it = execution_res.find("target");
-            // if (it != execution_res.end()) {
-            //     auto target_ls = it->second;
-            //     std::cout << "target: " << target_ls << std::endl;
-
-            //     for (auto target : target_ls) {
-            //         std::cout << "Explaining target " << target << std::endl;
-            //         explain(*this->interface, false, Global::config().get("provenance") == "subtreeHeights", "target(\"" + target + "\")");
-            //     }
-            // }
         }
 
         std::map<std::string, std::vector<std::string>> execute() {
-            engine->executeMain();
-            std::cout << "RAM: Execute Finished" << std::endl;
-            std::map<std::string, std::vector<std::string>> execution_res = engine->get_execute_result(); 
-            return execution_res;
+            return this->execution_res;
         }
 
         std::string explainRule(std::string ruleName, std::string ruleTuple){
@@ -440,8 +394,7 @@ class Interpreter{
             std::map<std::string, std::vector<std::string>> execution_res = engine->get_execute_result(); 
             std::cout << "Explaining target: " << ruleName + "(\"" + ruleTuple + "\")" << std::endl;
             explain(*this->interface, false, Global::config().get("provenance") == "subtreeHeights", ruleName + "(\"" + ruleTuple + "\")");
-            // return this->get_explained_string();
-            return "pass";
+            return this->get_explained_string();
         }
 
         
@@ -450,6 +403,7 @@ class Interpreter{
         std::unique_ptr<InterpreterEngine> engine;
         std::unique_ptr<RamTranslationUnit> tUnit;
         std::shared_ptr<InterpreterProgInterface> interface;
+        std::map<std::string, std::vector<std::string>> execution_res;
 
         std::string get_explained_string() {
             auto &str_stream = static_cast<std::ostringstream&>(*ExplainConfig::getExplainConfig().outputStream);
@@ -457,10 +411,6 @@ class Interpreter{
         }
 };
 
-// int main () {
-//         std::string datalog_example = ".type ObjectID \n .type Word \n \n .decl name(x: Word, y:ObjectID) \n name(\"apple\", \"1\"). \n name(\"banana\", \"2\"). \n .decl target(o:ObjectID)\n .output target\n target(O) :- name(\"banana\", O).";
-//         execute(datalog_example, false);
-// }
 
 PYBIND11_MODULE(PySouffle, m) {
     m.doc() = "pybind11 example plugin"; // optional module docstring

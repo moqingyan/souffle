@@ -54,7 +54,10 @@ std::vector<AstClause*> getClauses(const AstProgram& program, const AstRelation&
 }
 
 AstRelation* getRelation(const AstProgram& program, const AstQualifiedName& name) {
-    return getIf(program.getRelations(), [&](const AstRelation* r) { return r->getQualifiedName() == name; });
+    return getIf(program.getRelations(), [&](const AstRelation* r) { 
+        std::cout << "get relation" << r->getQualifiedName() << std::endl;
+        return r->getQualifiedName() == name; 
+        });
 }
 
 const AstType* getType(const AstProgram& program, const AstQualifiedName& name) {

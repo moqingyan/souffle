@@ -189,6 +189,8 @@ protected:
             const std::string& relName, const std::vector<std::string>& args) const {
         std::vector<RamDomain> nums;
 
+        std::cout << "transform to tuple: " << symTable << std::endl;
+
         auto rel = prog.getRelation(relName);
         if (rel == nullptr) {
             return nums;
@@ -214,6 +216,7 @@ protected:
             }
         }
 
+        std::cout << nums <<std::endl;
         return nums;
     }
 

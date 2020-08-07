@@ -49,6 +49,12 @@ LIBSOUFFLE_OBJS_IN_DIR = $(patsubst %.o, ../src/%.o, $(LIBSOUFFLE_OBJS))
 
 LIBSOUFFLE_SHARED_OBJS_IN_DIR = $(patsubst %.o, %.so, $(LIBSOUFFLE_OBJS_IN_DIR))
 
+
+all: update obj link
+# all: update obj debug
+# all: update $(LIBSOUFFLE_SHARED_OBJS_IN_DIR) obj link
+
+
 new_entry: update $(LIBSOUFFLE_SHARED_OBJS_IN_DIR)
 	g++ -std=c++17 -shared -O3 -Wall -fPIC \
 		`$(PYTHON3) -m pybind11 --includes` \
@@ -63,17 +69,12 @@ new_entry: update $(LIBSOUFFLE_SHARED_OBJS_IN_DIR)
 		PySouffle.cpp \
 		$(LIBSOUFFLE_OBJS_IN_DIR) \
 		-o PySouffle`$(PYTHON3)-config --extension-suffix`
-
-# all: update obj link substitute_gomp
-# all: update obj debug
-all: update $(LIBSOUFFLE_SHARED_OBJS_IN_DIR) obj link
-
+		
 update:
 	make -C ..
 
 obj:
 	g++ \
-		-O3 \
 		`$(PYTHON3) -m pybind11 --includes` \
 		-I/home/jianih/local/anaconda3/include \
 		-I../src \
@@ -82,7 +83,7 @@ obj:
 		-lsqlite3\
 		-lz \
 		-std=c++17 -shared -O3 -Wall -fPIC \
-		-c ../src/PySouffle.cpp \
+		-c PySouffle.cpp \
 		-o PySouffle.o 
 
 %.so: %.o

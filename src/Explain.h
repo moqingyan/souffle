@@ -94,9 +94,10 @@ public:
                 printError("Usage: explain relation_name(\"<string element1>\", <number element2>, ...)\n");
                 return true;
             }
-            std::cout << "explain cmd 2";
+            std::cout << "explain cmd 2" << std::endl;
             query = parseTuple(command[1]);
-            std::cout << "explain cmd 3";
+            std::cout << "explain cmd 3" << std::endl;
+            std::cout << "explain cmd: " << command << std::endl;
             printTree(prov.explain(query.first, query.second, ExplainConfig::getExplainConfig().depthLimit));
         } else if (command[0] == "subproof") {
             std::pair<std::string, std::vector<std::string>> query;

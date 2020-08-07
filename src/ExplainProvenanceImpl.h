@@ -214,6 +214,7 @@ public:
     std::unique_ptr<TreeNode> explain(
             std::string relName, std::vector<std::string> args, size_t depthLimit) override {
         auto tuple = argsToNums(relName, args);
+        std::cout << "explaining relation: " << relName << args << tuple.empty() << std::endl;
         if (tuple.empty()) {
             return std::make_unique<LeafNode>("Relation not found");
         }
@@ -785,6 +786,7 @@ private:
                     tuple >> n;
                 }
 
+                std::cout << "s: " << *rel->getAttrType(i) << "n: " << n << std::endl;
                 currentTuple.push_back(n);
 
                 if (n != tup[i]) {

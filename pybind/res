@@ -1,0 +1,647 @@
+obtain datalog
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationname
+get relationname
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationname
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationtarget
+get relationtarget1
+get relationtarget.@info.1
+get relationname
+get relationtarget
+get relationtarget1
+No Error in AST phase
+RAM: start phase: astTranslationUnit 0x559a1aef3720
+In translate unit
+getting program
+translating program
+start translate program
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationtarget
+get relationtarget1
+get relationtarget.@info.1
+get relationname
+get relationtarget
+get relationtarget1
+get relationtarget.@info.1
+get relationtarget1.@info.1
+get relationname
+get relationname
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+get relationtarget1
+start scc
+recersive checked: 0
+Internal Relation setup
+relation computing
+init translate non rec
+translating clause
+translate clause: 1
+translate clause: 2
+translate clause: 3
+translate clause: 4
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - apple
+looking up: apple
+looking up 0: apple
+looking up 1: apple
+captured value: 5translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - 1
+looking up: 1
+looking up 0: 1
+looking up 1: 1
+captured value: 5translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 4
+translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 4
+translate clause: 5 pushed back
+translate clause: 6
+translate clause
+debug info clause
+update result
+translating clause
+translate clause: 1
+translate clause: 2
+translate clause: 3
+translate clause: 4
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - banana
+looking up: banana
+looking up 0: banana
+looking up 1: banana
+captured value: 5translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - 2
+looking up: 2
+looking up 0: 2
+looking up 1: 2
+captured value: 5translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 4
+translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 4
+translate clause: 5 pushed back
+translate clause: 6
+translate clause
+debug info clause
+update result
+relation computed
+before store
+after store
+recersive checked: 0
+Internal Relation setup
+relation computing
+init translate non rec
+translating clause
+translate clause: 1
+translate clause: 2
+translate clause: 3
+translate clause: 7
+translate clause: 8
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 4
+translate value: 1
+translate value: 20
+translate value: 7
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 4
+get relationname
+get relationtarget
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate clause: 9
+translate clause: 10
+translate clause: 11
+translate clause: 16
+translate clause: 17
+translate clause
+debug info clause
+update result
+relation computed
+before store
+after store
+recersive checked: 0
+Internal Relation setup
+relation computing
+init translate non rec
+translating clause
+translate clause: 1
+translate clause: 2
+translate clause: 3
+translate clause: 7
+translate clause: 8
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 4
+translate value: 1
+translate value: 20
+translate value: 7
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 4
+get relationname
+get relationtarget
+get relationtarget1
+translate value: 1
+translate value: 20
+translate value: 2
+translate clause: 9
+translate clause: 10
+translate clause: 11
+translate clause: 16
+looking up: apple
+looking up 0: apple
+looking up 1: apple
+translate clause: 17
+translate clause
+debug info clause
+update result
+relation computed
+before store
+after store
+recersive checked: 0
+Internal Relation setup
+relation computing
+init translate non rec
+translating clause
+translate clause: 1
+translate clause: 2
+translate clause: 3
+translate clause: 4
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 4
+translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - N,O
+looking up: N,O
+looking up 0: N,O
+looking up 1: N,O
+captured value: 5translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - name,N,O
+looking up: name,N,O
+looking up 0: name,N,O
+looking up 1: name,N,O
+captured value: 5translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - target(N,O) :- 
+   name(N,O).
+looking up: target(N,O) :- 
+   name(N,O).
+looking up 0: target(N,O) :- 
+   name(N,O).
+looking up 1: target(N,O) :- 
+   name(N,O).
+captured value: 5translate clause: 5 pushed back
+translate clause: 6
+translate clause
+debug info clause
+update result
+relation computed
+before store
+after store
+recersive checked: 0
+Internal Relation setup
+relation computing
+init translate non rec
+translating clause
+translate clause: 1
+translate clause: 2
+translate clause: 3
+translate clause: 4
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 4
+translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - O
+looking up: O
+looking up 0: O
+looking up 1: O
+captured value: 5translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - name,"apple",O
+looking up: name,"apple",O
+looking up 0: name,"apple",O
+looking up 1: name,"apple",O
+captured value: 5translate clause: 5 pushed back
+translate clause: 5
+translate value: 1
+translate value: 20
+translate value: 5 - target1(O) :- 
+   name("apple",O).
+looking up: target1(O) :- 
+   name("apple",O).
+looking up 0: target1(O) :- 
+   name("apple",O).
+looking up 1: target1(O) :- 
+   name("apple",O).
+captured value: 5translate clause: 5 pushed back
+translate clause: 6
+translate clause
+debug info clause
+update result
+relation computed
+before store
+after store
+get relationname
+get relationtarget
+get relationname
+get relationtarget
+translate clause: 1
+translate clause: 2
+translate clause: 3
+translate clause: 7
+translate clause: 8
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate clause: 9
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate clause: 10
+translate clause: 11
+translate clause: 16
+translate clause: 17
+get relationname
+get relationtarget
+get relationname
+translate value: 1
+translate value: 20
+translate value: 12
+translate value: 1
+translate value: 20
+translate value: 12
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+get relationtarget
+get relationtarget1
+translate clause: 1
+translate clause: 2
+translate clause: 3
+translate clause: 7
+translate clause: 8
+translate value: 1
+translate value: 20
+translate value: 5 - apple
+looking up: apple
+looking up 0: apple
+looking up 1: apple
+captured value: 5translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate clause: 9
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate value: 1
+translate value: 20
+translate value: 2
+translate value: 1
+translate value: 20
+translate value: 12
+translate clause: 10
+translate clause: 11
+translate clause: 16
+looking up: apple
+looking up 0: apple
+looking up 1: apple
+translate clause: 17
+get relationname
+get relationtarget
+get relationtarget1
+get relationname
+translate value: 1
+translate value: 20
+translate value: 5 - apple
+looking up: apple
+looking up 0: apple
+looking up 1: apple
+captured value: 5translate value: 1
+translate value: 20
+translate value: 12
+Finished translating program
+Generating RAM program
+Finished Generate RAM program
+RAM: finish translate unit 0
+ram transformer obtained
+start transforming
+cur transformerRamLoopTransformer
+start transforming
+cur transformerExpandFilterTransformer
+cur transformerHoistConditionsTransformer
+cur transformerMakeIndexTransformer
+start transforming
+cur transformerExpandFilterTransformer
+cur transformerHoistConditionsTransformer
+cur transformerMakeIndexTransformer
+cur transformerIfConversionTransformer
+cur transformerChoiceConversionTransformer
+cur transformerCollapseFiltersTransformer
+cur transformerTupleIdTransformer
+cur transformerRamLoopTransformer
+start transforming
+cur transformerHoistAggregateTransformer
+cur transformerTupleIdTransformer
+cur transformerExpandFilterTransformer
+cur transformerHoistConditionsTransformer
+cur transformerCollapseFiltersTransformer
+cur transformerEliminateDuplicatesTransformer
+cur transformerReorderConditionsTransformer
+cur transformerRamLoopTransformer
+cur transformerRamConditionalTransformer
+cur transformerReportIndexTransformer
+RAM: finish transform unit 1
+RAM: finish transform unit 2
+Start RAM Phase
+No Error in RAM phase
+RAM: Execute
+Execute main: 1
+Execute main: 2
+Execute main: 3
+Start Execute no Profiling
+trying output
+end output: 
+output ret
+trying output
+end output: 
+output ret
+Finish Execute no Profiling
+reset handler
+Done reset handler
+execution res{target->[apple	1,banana	2],target1->[1]}
+Execute main: 1
+Execute main: 2
+Execute main: 3
+Start Execute no Profiling
+trying output
+end output: 
+output ret
+trying output
+end output: 
+output ret
+Finish Execute no Profiling
+reset handler
+Done reset handler
+Explaining target: target1("1")
+looking up: N,O
+looking up 0: N,O
+looking up 1: N,O
+looking up: name,N,O
+looking up 0: name,N,O
+looking up 1: name,N,O
+looking up: target(N,O) :- 
+   name(N,O).
+looking up 0: target(N,O) :- 
+   name(N,O).
+looking up 1: target(N,O) :- 
+   name(N,O).
+looking up: O
+looking up 0: O
+looking up 1: O
+looking up: name,"apple",O
+looking up 0: name,"apple",O
+looking up 1: name,"apple",O
+looking up: target1(O) :- 
+   name("apple",O).
+looking up 0: target1(O) :- 
+   name("apple",O).
+looking up 1: target1(O) :- 
+   name("apple",O).
+Explain 1: target1(1)
+Explain 2 
+explain 1
+explain cmd: [explain,target1(1)]
+explain cmd 2
+Parse Tuple
+Parse Tuple: 1
+Parse Tuple: 2
+Parse Tuple: 3
+Finish: Parse Tuple
+explain cmd 3
+explain cmd: [explain,target1(1)]
+transform to tuple: target1
+rela case: s
+looking up: 1
+looking up 0: 1
+looking up 1: 1
+[1]
+explaining relation: target1[1]0
+looking up: 1
+looking up 0: 1
+looking up 1: 1
+s: sn: 1
+Explain 3
+python:
+{ "proof":
+	{ "premises": "target1(\"1\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "axiom": "name(\"apple\", \"1\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "target(N,O) :- \n   name(N,O)."},
+	{ "rule-number": "(R1)", "rule": "target1(O) :- \n   name(\"apple\",O)."}
+]
+}
+
+end

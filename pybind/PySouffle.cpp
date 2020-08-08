@@ -393,7 +393,7 @@ class Interpreter{
             engine->executeMain();
             std::map<std::string, std::vector<std::string>> execution_res = engine->get_execute_result(); 
             std::cout << "Explaining target: " << ruleName + "(\"" + ruleTuple + "\")" << std::endl;
-            explain(*this->interface, false, Global::config().get("provenance") == "subtreeHeights", ruleName + "(\"" + ruleTuple + "\")");
+            explain(*this->interface, false, Global::config().get("provenance") == "subtreeHeights", ruleName + "(" + ruleTuple + ")");
             return this->get_explained_string();
         }
 

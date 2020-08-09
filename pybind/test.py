@@ -9,10 +9,10 @@ interpreter = PySouffle.Interpreter(datalog1)
 rules = interpreter.execute()
 # print(rules)
 
-for ruleName, ruleTuples in rules.items():
-    for ruleTuple in ruleTuples:
-        x = interpreter.explainRule(ruleName, ruleTuple)
-# x = interpreter.explainRule("target1", "1")
+# for ruleName, ruleTuples in rules.items():
+#     for ruleTuple in ruleTuples:
+#         x = interpreter.explainRule(ruleName, ruleTuple)
+x = interpreter.explainRulename("target")
 
 # res3=PySouffle.execute(datalog3, True)
 

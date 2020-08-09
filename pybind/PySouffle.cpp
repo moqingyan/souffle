@@ -390,11 +390,27 @@ class Interpreter{
         }
 
         std::string explainRule(std::string ruleName, std::string ruleTuple){
-            engine->executeMain();
-            std::map<std::string, std::vector<std::string>> execution_res = engine->get_execute_result(); 
-            std::cout << "Explaining target: " << ruleName + "(\"" + ruleTuple + "\")" << std::endl;
             explain(*this->interface, false, Global::config().get("provenance") == "subtreeHeights", ruleName + "(" + ruleTuple + ")");
             return this->get_explained_string();
+        }
+
+        std::map<std::string, std::string> explainRulename(std::string ruleName){
+            std::map<std::string, std::string> explanation;
+
+            for (auto res_map: this->execution_res){
+                std::string curRuleName = res_map.first;
+                if ( ruleName != curRuleName){
+                    continue;
+                }
+
+                std::vector<std::string> ruleTuples = res_map.second;
+                for (std::string ruleTuple: ruleTuples){
+                    explain(*this->interface, false, Global::config().get("provenance") == "subtreeHeights", ruleName + "(" + ruleTuple + ")");
+                    std::string curExplanation = this->get_explained_string();
+                    explanation[ruleTuple] = curExplanation;
+                }
+            }
+            return explanation;
         }
 
         
@@ -419,7 +435,8 @@ PYBIND11_MODULE(PySouffle, m) {
         .def(py::init<std::string>())
         //    .def("set_interpreter", &Interpreter::set_interpreter)
         .def("execute", &Interpreter::execute)
-        .def("explainRule", &Interpreter::explainRule);
+        .def("explainRule", &Interpreter::explainRule)
+        .def("explainRulename", &Interpreter::explainRulename);
 
     // m.def("getInterpreter", &getInterpreter, "A function which generate interpreter");
     m.def("execute", &execute, "A function which takes in the code and return the execution result");

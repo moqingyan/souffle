@@ -240,7 +240,6 @@ auto get_ram_transformer(){
             std::make_unique<ParallelTransformer>()),
         std::make_unique<ReportIndexTransformer>());
 
-    std::cout << "ram transformer obtained" << std::endl;
     return ramTransform;
 }
 
@@ -259,23 +258,16 @@ int check_ast_err(const std::unique_ptr<AstTranslationUnit> &astTranslationUnit)
                   << std::endl;
         return 1;
     }
-    else {
-            std::cout << "No Error in AST phase" << std::endl;
-    }
     return 0;
 }
 
 int check_ram_err(const std::unique_ptr<RamTranslationUnit> &ramTranslationUnit){
-    std::cout << "Start RAM Phase" << std::endl;
     if (ramTranslationUnit->getErrorReport().getNumIssues() != 0) {
         std::cerr << ramTranslationUnit->getErrorReport();
         std::cerr << "During Ram phase: " << std::to_string(ramTranslationUnit->getErrorReport().getNumErrors()) +
                              " errors generated, evaluation aborted"
                   << std::endl;
         return 1;
-    }
-    else {
-            std::cout << "No Error in RAM phase" << std::endl;
     }
     return 0;
 }
@@ -299,25 +291,19 @@ std::map<std::string, std::vector<std::string>> execute(std::string code, bool g
     // Translate AST to RAM 
     // TODO: change translate unit to accept fact strings
     
-    std::cout << "RAM: start phase: astTranslationUnit " << astTranslationUnit.get() << std::endl;
     std::unique_ptr<RamTranslationUnit> ramTranslationUnit =
             AstTranslator().translateUnit(*astTranslationUnit);
 
-    std::cout << "RAM: finish translate unit 0" << std::endl;
     auto ramTransformer = get_ram_transformer();
     ramTransformer->apply(*ramTranslationUnit);
-    std::cout << "RAM: finish transform unit 1" << std::endl;
-    std::cout << "RAM: finish transform unit 2" << std::endl;
 
     check_ram_err(ramTranslationUnit);
     
     // Execute RAM
-    std::cout << "RAM: Execute" << std::endl;
     std::unique_ptr<InterpreterEngine> interpreter(
                     std::make_unique<InterpreterEngine>(*ramTranslationUnit));
     interpreter->executeMain();
 
-    std::cout << "RAM: Execute Finished" << std::endl;
     std::map<std::string, std::vector<std::string>> execution_res = interpreter->get_execute_result(); 
 
     if (get_prov){
@@ -326,10 +312,8 @@ std::map<std::string, std::vector<std::string>> execute(std::string code, bool g
         auto it = execution_res.find("target");
         if (it != execution_res.end()) {
             auto target_ls = it->second;
-            std::cout << "target: " << target_ls << std::endl;
 
             for (auto target : target_ls) {
-                std::cout << "Explaining target " << target << std::endl;
                 explain(interface, false, Global::config().get("provenance") == "subtreeHeights", "target(\"" + target + "\")");
             }
         } else if (Global::config().get("provenance") == "explore") {
@@ -357,19 +341,14 @@ class Interpreter{
             // Translate AST to RAM 
             // TODO: change translate unit to accept fact strings
             
-            std::cout << "RAM: start phase: astTranslationUnit " << this->astUnit.get() << std::endl;
             this->tUnit = AstTranslator().translateUnit(*this->astUnit);
 
-            std::cout << "RAM: finish translate unit 0" << std::endl;
             auto ramTransformer = get_ram_transformer();
             ramTransformer->apply(*this->tUnit);
-            std::cout << "RAM: finish transform unit 1" << std::endl;
-            std::cout << "RAM: finish transform unit 2" << std::endl;
 
             check_ram_err(this->tUnit);
             
             // Execute RAM
-            std::cout << "RAM: Execute" << std::endl;
             this->engine = std::make_unique<InterpreterEngine>(*this->tUnit);
             this->interface = std::make_shared<InterpreterProgInterface>(*this->engine);
 
@@ -381,7 +360,6 @@ class Interpreter{
             this->execution_res = engine->get_execute_result(); 
             // only run explain interface if interpreted
             // InterpreterProgInterface interface(*engine);
-            std::cout << "execution res" << execution_res << std::endl;
             this->interface = std::make_shared<InterpreterProgInterface>(*this->engine);
         }
 
